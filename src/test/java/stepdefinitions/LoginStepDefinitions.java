@@ -1,5 +1,6 @@
 package stepdefinitions;
 
+import actions.WaitPage;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -16,14 +17,16 @@ import tasks.Login;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
 import static net.thucydides.core.webdriver.ThucydidesWebDriverSupport.getDriver;
+import static utils.CollectionOfConstants.INVALID_CREDENTIALS_MESSAGE;
+import static utils.CollectionOfConstants.WELCOME_TITTLE;
 
 public class LoginStepDefinitions {
 
     @Given("I am on the home page")
-    public void i_am_on_the_home_page() {
+    public void onTheHomePage() {
         theActorInTheSpotlight().attemptsTo(
                 Open.browserOn().the(HomePage.class),
-                WaitUntil.the(HomePage.LOGO_IMG, isVisible())
+                WaitPage.toBeLoad()
         );
 
         Serenity.recordReportData().withTitle("URL").andContents(getDriver().getCurrentUrl());
@@ -31,25 +34,51 @@ public class LoginStepDefinitions {
     }
 
     @When("I enter valid credentials")
-    public void i_enter_valid_credentials() {
+    public void enterValidCredentials() {
         theActorInTheSpotlight().attemptsTo(
-                Login.byEnteringValidCredentials()
+                Login.enteringValidCredentials()
+        );
+    }
+
+    @When("I enter invalid credentials")
+    public void enterInvalidCredentials() {
+        theActorInTheSpotlight().attemptsTo(
+                Login.enteringInvalidCredentials()
         );
     }
 
     @And("I click the login button")
-    public void i_click_the_login_button() {
+    public void clickTheLoginButton() {
         theActorInTheSpotlight().attemptsTo(
                 Click.on(HomePage.LOGIN_BUTTON)
         );
     }
 
     @Then("I should be logged in")
-    public void i_should_be_logged_in() {
+    public void ShouldBeLoggedIn() {
         theActorInTheSpotlight().attemptsTo(
-                WaitUntil.the(DashboardPage.TITTLE, isVisible()),
-                Ensure.that(DashboardPage.TITTLE).text().contains("Begin your Next Adventure")
+                WaitPage.toBeLoad(),
+                Ensure.that(DashboardPage.TITTLE).text().contains(WELCOME_TITTLE)
         );
+        Serenity.takeScreenshot();
     }
 
+
+    @Then("I should see an alert")
+    public void ShouldSeeAnAlert() {
+        theActorInTheSpotlight().attemptsTo(
+                WaitUntil.the(HomePage.INVALID_CREDENTIALS_ALERT, isVisible()),
+                Ensure.that(HomePage.INVALID_CREDENTIALS_ALERT).text().contains(INVALID_CREDENTIALS_MESSAGE)
+        );
+        Serenity.takeScreenshot();
+    }
+
+    @Then("I should see an error message that reads {string}")
+    public void shouldSeeAnErrorMessageThatReads(String message) {
+        theActorInTheSpotlight().attemptsTo(
+                WaitPage.toBeLoad(),
+                Ensure.that(HomePage.ERROR_MESSAGE.of(message)).isDisplayed()
+        );
+        Serenity.takeScreenshot();
+    }
 }

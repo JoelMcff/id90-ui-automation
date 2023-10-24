@@ -8,6 +8,11 @@ import java.io.FileReader;
 
 public class ConvertJson {
 
+    /**
+     * The ConvertJson class is responsible for reading a JSON file
+     * and converting it into a Java object using the Gson library.
+     */
+
     private static Gson gson;
 
     private static Gson getGson() {

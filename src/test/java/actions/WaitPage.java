@@ -14,7 +14,13 @@ import java.util.Objects;
 
 import static net.thucydides.core.webdriver.ThucydidesWebDriverSupport.getDriver;
 
+/**
+ * This class represents a custom task to wait for a web page to be fully loaded.
+ * It ensures that the Document Object Model (DOM) is in the "complete" state before proceeding with further actions
+ */
+
 public class WaitPage implements Task {
+
 
     public static Performable toBeLoad() {
         return Instrumented.instanceOf(WaitPage.class).newInstance();

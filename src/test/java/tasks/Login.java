@@ -2,28 +2,30 @@ package tasks;
 
 import actions.WriteAndSelect;
 import net.serenitybdd.screenplay.Performable;
+import net.serenitybdd.screenplay.RememberThat;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actions.Enter;
 import pages.HomePage;
-import testdataobjects.UserCredentials;
+import testdataobjects.LoginCredentials;
 
 public class Login {
 
-    private static final UserCredentials userCredentials = UserCredentials.getData();
+    private static final LoginCredentials loginCredentials = LoginCredentials.getData();
 
     public static Performable enteringValidCredentials() {
         return Task.where("{0} enters the valid credentials",
-                WriteAndSelect.theOption(userCredentials.getCompany()).from(HomePage.COMPANY_TEXT_BOX),
-                Enter.theValue(userCredentials.getValidUsername()).into(HomePage.EMAIL_OR_NUMBER_TEXT_BOX),
-                Enter.theValue(userCredentials.getValidPassword()).into(HomePage.PASSWORD_TEXT_BOX)
+                WriteAndSelect.theOption(loginCredentials.getCompany()).from(HomePage.COMPANY_TEXT_BOX),
+                Enter.theValue(loginCredentials.getValidUsername()).into(HomePage.EMAIL_OR_NUMBER_TEXT_BOX),
+                Enter.theValue(loginCredentials.getValidPassword()).into(HomePage.PASSWORD_TEXT_BOX),
+                RememberThat.theValueOf("password").is(loginCredentials.getValidPassword())
         );
     }
 
     public static Performable enteringInvalidCredentials() {
         return Task.where("{0} enters invalid credentials",
-                WriteAndSelect.theOption(userCredentials.getCompany()).from(HomePage.COMPANY_TEXT_BOX),
-                Enter.theValue(userCredentials.getInvalidUsername()).into(HomePage.EMAIL_OR_NUMBER_TEXT_BOX),
-                Enter.theValue(userCredentials.getInvalidPassword()).into(HomePage.PASSWORD_TEXT_BOX)
+                WriteAndSelect.theOption(loginCredentials.getCompany()).from(HomePage.COMPANY_TEXT_BOX),
+                Enter.theValue(loginCredentials.getInvalidUsername()).into(HomePage.EMAIL_OR_NUMBER_TEXT_BOX),
+                Enter.theValue(loginCredentials.getInvalidPassword()).into(HomePage.PASSWORD_TEXT_BOX)
         );
     }
 }

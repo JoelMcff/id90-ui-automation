@@ -9,7 +9,7 @@ import static utils.CollectionOfConstants.LOGIN_CREDENTIALS_FILE_PATH;
  * Java object class responsible for storing the data read from the json file indicated in the path e.g. LOGIN_CREDENTIALS_FILE_PATH
  */
 @Data
-public class UserCredentials {
+public class LoginCredentials {
 
     private String company;
     private String validUsername;
@@ -17,7 +17,7 @@ public class UserCredentials {
     private String invalidUsername;
     private String invalidPassword;
 
-    public static UserCredentials getData() {
-        return ConvertJson.fromPath(LOGIN_CREDENTIALS_FILE_PATH).toObject(UserCredentials.class);
+    public static LoginCredentials getData() {
+        return ConvertJson.fromPath(LOGIN_CREDENTIALS_FILE_PATH).toObject(LoginCredentials.class);
     }
 }
